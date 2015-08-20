@@ -14,18 +14,18 @@ import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class MenuPanel extends JPanel {
 	MenuModel model = new MenuModel();
-	private ArrayList<String> arrayTitle = model.getArrTitle(); 
+	private ArrayList<String> arrayTitle = model.getArrTitle();
 	private BufferedImage bg_2dep;
 	private BufferedImage bg_1dep;
 	private BufferedImage logo;
 	private BufferedImage bg_2dep_2;
 	private BufferedImage bg_listline;
 	private BufferedImage main_banner;
-	private ImageIcon imgIcon;
 	private BufferedImage bg_listline_2;
 	private BufferedImage bg_focus_indi;
 	private BufferedImage focus_main;
@@ -35,6 +35,7 @@ public class MenuPanel extends JPanel {
 		int y = 148;
 		int y_2 = 222;
 		super.paintComponent(g);
+		
 		try {
 			bg_2dep = ImageIO.read(new File("./resource/image/bg_2dep.png"));
 			bg_1dep = ImageIO.read(new File("./resource/image/bg_1dep.png"));
@@ -45,7 +46,6 @@ public class MenuPanel extends JPanel {
 			bg_listline_2 = ImageIO.read(new File("./resource/image/bg_listline_2.png"));
 			bg_focus_indi = ImageIO.read(new File("./resource/image/bg_focus_indi.png"));
 			focus_main = ImageIO.read(new File("./resource/image/focus_main.png"));
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -72,18 +72,29 @@ public class MenuPanel extends JPanel {
 		g.drawImage(focus_main, 40, 100, 207, 35, this);    //초기 포커스 주기
 		g.drawImage(bg_focus_indi, 226, 103, 17, 31, this);
 		drawMenuString(g);                					//메뉴 글씨 그리기
-		
+		this.setFocusable(true);
+		this.requestFocusInWindow();
 	}
-	
-	
 	
 	public Graphics drawMenuString(Graphics g){
 		int y = 123;
-		for (int i = 0; i < model.getViewEndIndex(); i++) {
+		int end = 0;
+		
+		if(model.getViewEndIndex() > model.getEndIndex()){
+			end = model.getEndIndex();
+		}else{
+			end = model.getViewEndIndex();
+		}
+		
+		for (int i = 0; i < end; i++) {
 			g.drawString(arrayTitle.get(i), 63, y);
 			y+=42;
 		}
 		return g;
 	}
 	
+	public void moveToDown(){
+		System.out.println("여기는 뷰");
+		
+	}
 }

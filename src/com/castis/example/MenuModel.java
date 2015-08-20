@@ -13,9 +13,8 @@ public class MenuModel {
 	private ArrayList<String> arrayTitle = new ArrayList<String>();
 	String[] week = { "일", "월", "화", "수", "목", "금", "토" };
 	int[] focusPosition = {100, 142, 184, 226, 268, 310, 352, 394};
-	
+
 	public MenuModel() {
-		// TODO Auto-generated constructor stub
 		arrayTitle.add("오늘의 추천");
 		arrayTitle.add("영화");
 		arrayTitle.add("인기 케이블 / 미드");
@@ -24,6 +23,9 @@ public class MenuModel {
 		arrayTitle.add("교육 / EBS");
 		arrayTitle.add("Joy&Life");
 		arrayTitle.add("마이 TV");
+		arrayTitle.add("테스트 1");
+		arrayTitle.add("테스트 2");
+		arrayTitle.add("테스트 3");
 		endIndex = arrayTitle.size();
 	}
 
@@ -77,11 +79,18 @@ public class MenuModel {
 	
 	public void pulsCurrentIndex(){
 		this.currentIndex = this.currentIndex + 1;
+		if (currentIndex > endIndex - 1){
+			this.currentIndex = 0;
+		}
 		System.out.println(currentIndex);
 	}
 	
 	public void minusCurrentIndex(){
 		this.currentIndex = this.currentIndex - 1;
+		if (currentIndex < 0) {
+			this.currentIndex = endIndex - 1;
+		}
+		System.out.println(currentIndex);
 	}
 	
 	public String getDateString() { 
