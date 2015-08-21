@@ -4,18 +4,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class MenuController implements KeyListener{
-	private MenuPanel view;
+	private MenuFrame view;
 	private MenuModel model;
 	
-	public MenuController() {
-		view = new MenuPanel();
-		model = new MenuModel();
+	public MenuController(MenuFrame menuFrame, MenuModel menuModel) {
+		this.view = menuFrame;
+		this.model = menuModel;
+		view.setListener(this);
 	}
-	public MenuController(MenuPanel view, MenuModel model)  {
-		this.view = view;
-		this.model = model;
-	}
-	
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -44,13 +40,14 @@ public class MenuController implements KeyListener{
 	public void moveToDown(){
 		System.out.println("아래");
 		model.pulsCurrentIndex();
-		view.moveToDown();
+//		view.repaint(model.getCurrentIndex());
+		model.notifyObservers();
 	}
 	
 	public void moveToUp(){
 		System.out.println("위");
 		model.minusCurrentIndex();
-//		view.somethingChange();
+		model.notifyObservers();
 	}
 	
 }

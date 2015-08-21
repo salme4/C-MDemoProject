@@ -6,8 +6,8 @@ public class Menu {
 		// TODO Auto-generated method stub
 		//MenuFrame menuFrame = new MenuFrame();
 		MenuModel menuModel = new MenuModel();
-		MenuPanel menuPanel = new MenuPanel();
-		MenuController menuController = new MenuController(menuPanel, menuModel);
-		new MenuFrame();
+		MenuFrame menuFrame = new MenuFrame();
+		menuModel.registerObserver(menuFrame);
+		MenuController menuController = new MenuController(menuFrame, menuModel);
 	}
 }

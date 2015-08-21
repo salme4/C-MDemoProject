@@ -6,13 +6,23 @@ import java.util.Calendar;
 
 public class MenuModel {
 	private int startIndex = 0; 									   // 배열의 시작 인덱스
-	private int endIndex; 								    	   // 배열의 마지막 인덱스
+	private int endIndex; 								    	       // 배열의 마지막 인덱스
 	private int viewStartIndex = 0; 								   // 화면에 보여질 시작 인덱스
 	private int viewEndIndex = 8;  								  	   // 화면에 보여질 마지막 인덱스
 	private int currentIndex = 0;   								   // 현재 선택되어진 인덱스
 	private ArrayList<String> arrayTitle = new ArrayList<String>();
 	String[] week = { "일", "월", "화", "수", "목", "금", "토" };
-	int[] focusPosition = {100, 142, 184, 226, 268, 310, 352, 394};
+	private int[] focusPosition = {100, 142, 184, 226, 268, 310, 352, 394};
+	private int[] indiPosition = {103, 145, 187, 229, 271, 313, 355, 397};
+	private ArrayList<Observer> list = new ArrayList<Observer>();
+	
+	public int[] getFocusPosition() {
+		return focusPosition;
+	}
+
+	public void setFocusPosition(int[] focusPosition) {
+		this.focusPosition = focusPosition;
+	}
 
 	public MenuModel() {
 		arrayTitle.add("오늘의 추천");
@@ -82,7 +92,6 @@ public class MenuModel {
 		if (currentIndex > endIndex - 1){
 			this.currentIndex = 0;
 		}
-		System.out.println(currentIndex);
 	}
 	
 	public void minusCurrentIndex(){
@@ -90,7 +99,18 @@ public class MenuModel {
 		if (currentIndex < 0) {
 			this.currentIndex = endIndex - 1;
 		}
-		System.out.println(currentIndex);
+	}
+	
+	public void registerObserver(Observer o){
+		list.add(o);
+	}
+	
+	
+	public void notifyObservers() {
+		for(Observer o : list){
+			System.out.println("currentIndex : " + currentIndex);
+			o.update(currentIndex);
+		}
 	}
 	
 	public String getDateString() { 
@@ -102,5 +122,4 @@ public class MenuModel {
 		date += dateFormat.format(cal.getTime());
 	  	return date;
 	}
-	
 }

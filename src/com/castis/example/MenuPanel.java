@@ -3,6 +3,7 @@ package com.castis.example;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,9 +18,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class MenuPanel extends JPanel {
-	MenuModel model = new MenuModel();
-	private ArrayList<String> arrayTitle = model.getArrTitle();
+public class MenuPanel extends JPanel{
+	MenuModel model;
+	private ArrayList<String> arrayTitle;
 	private BufferedImage bg_2dep;
 	private BufferedImage bg_1dep;
 	private BufferedImage logo;
@@ -29,13 +30,31 @@ public class MenuPanel extends JPanel {
 	private BufferedImage bg_listline_2;
 	private BufferedImage bg_focus_indi;
 	private BufferedImage focus_main;
+	private int[] focusPosition;
+	private int[] indiPosition;
+	private int currentIndex;
+	
+	public int getCurrentIndex() {
+		return currentIndex;
+	}
+
+	public void setCurrentIndex(int currentIndex) {
+		this.currentIndex = currentIndex;
+	}
+
+	public MenuPanel(MenuModel model) {
+		this.model = model;
+		this.setFocusable(true);
+		//this.setBounds(new Rectangle(0, 0, 960, 540));
+		this.requestFocusInWindow();
+		arrayTitle = model.getArrTitle();
+		focusPosition = model.getFocusPosition();
+	}
 	
 	@Override
-	protected void paintComponent(Graphics g) {
+	public void paint(Graphics g) {
 		int y = 148;
 		int y_2 = 222;
-		super.paintComponent(g);
-		
 		try {
 			bg_2dep = ImageIO.read(new File("./resource/image/bg_2dep.png"));
 			bg_1dep = ImageIO.read(new File("./resource/image/bg_1dep.png"));
@@ -63,38 +82,42 @@ public class MenuPanel extends JPanel {
 			g.drawImage(bg_listline_2, 247, y_2, 207, getHeight(), this);
 			y_2+=42;
 		}
-		/*
-		 * drawString 부분
-		 */
+
 		g.setColor(Color.white);
 		g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
 		g.drawString(model.getDateString(), 266, 85);
-		g.drawImage(focus_main, 40, 100, 207, 35, this);    //초기 포커스 주기
-		g.drawImage(bg_focus_indi, 226, 103, 17, 31, this);
-		drawMenuString(g);                					//메뉴 글씨 그리기
-		this.setFocusable(true);
-		this.requestFocusInWindow();
+		System.out.println("cur : " + currentIndex);
+		drawMenuString(g, currentIndex);                					//메뉴 글씨 그리기
 	}
 	
-	public Graphics drawMenuString(Graphics g){
+	public void drawMenuString(Graphics g, int currentIndex){
 		int y = 123;
 		int end = 0;
 		
+		/*
+		 *  보여줄 item보다 데이터가 적을 경우 처리
+		 */
 		if(model.getViewEndIndex() > model.getEndIndex()){
 			end = model.getEndIndex();
 		}else{
 			end = model.getViewEndIndex();
 		}
-		
+		g.setColor(Color.white);
+		//포커스인가?painting
 		for (int i = 0; i < end; i++) {
+			if(currentIndex == i){
+				System.out.println();
+				g.setFont(new Font("HY중고딕", Font.PLAIN, 19));
+				g.drawImage(focus_main, 40, focusPosition[currentIndex], 207, 35, this);    //초기 포커스 주기
+				g.drawImage(bg_focus_indi, 226, focusPosition[currentIndex], 17, 31, this);
+				g.drawString(arrayTitle.get(i), 63, y);
+			}else{
+				g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
+			}
 			g.drawString(arrayTitle.get(i), 63, y);
 			y+=42;
 		}
-		return g;
 	}
+
 	
-	public void moveToDown(){
-		System.out.println("여기는 뷰");
-		
-	}
 }
