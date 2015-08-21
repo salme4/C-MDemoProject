@@ -40,6 +40,7 @@ public class MenuController implements KeyListener{
 	public void moveToDown(){
 		System.out.println("아래");
 		model.pulsCurrentIndex();
+		//model.viewPlus();
 //		view.repaint(model.getCurrentIndex());
 		model.notifyObservers();
 	}
@@ -47,6 +48,7 @@ public class MenuController implements KeyListener{
 	public void moveToUp(){
 		System.out.println("위");
 		model.minusCurrentIndex();
+		//model.viewMinus();
 		model.notifyObservers();
 	}
 	

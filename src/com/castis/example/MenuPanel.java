@@ -33,6 +33,8 @@ public class MenuPanel extends JPanel{
 	private int[] focusPosition;
 	private int[] indiPosition;
 	private int currentIndex;
+	private int startIndex;
+	private int endIndex;
 	
 	public int getCurrentIndex() {
 		return currentIndex;
@@ -49,6 +51,7 @@ public class MenuPanel extends JPanel{
 		this.requestFocusInWindow();
 		arrayTitle = model.getArrTitle();
 		focusPosition = model.getFocusPosition();
+		indiPosition = model.getIndiPosition();
 	}
 	
 	@Override
@@ -92,24 +95,31 @@ public class MenuPanel extends JPanel{
 	
 	public void drawMenuString(Graphics g, int currentIndex){
 		int y = 123;
-		int end = 0;
-		
 		/*
 		 *  보여줄 item보다 데이터가 적을 경우 처리
 		 */
 		if(model.getViewEndIndex() > model.getEndIndex()){
-			end = model.getEndIndex();
+			endIndex = model.getEndIndex();
 		}else{
-			end = model.getViewEndIndex();
+			endIndex = model.getViewEndIndex();
 		}
-		g.setColor(Color.white);
+		
+		/*
+		 * current가 viewEndIndex를 넘을때
+		 * current가 viewStartIndex보다 작을 때
+		 * 
+		 */
+		
 		//포커스인가?painting
-		for (int i = 0; i < end; i++) {
+		for (int i = startIndex; i <= endIndex; i++) {
 			if(currentIndex == i){
-				System.out.println();
+				int focusing = currentIndex;
+				if (focusing > model.getViewEndIndex()){
+					focusing = model.getViewEndIndex();
+				}
 				g.setFont(new Font("HY중고딕", Font.PLAIN, 19));
-				g.drawImage(focus_main, 40, focusPosition[currentIndex], 207, 35, this);    //초기 포커스 주기
-				g.drawImage(bg_focus_indi, 226, focusPosition[currentIndex], 17, 31, this);
+				g.drawImage(focus_main, 40, focusPosition[focusing], 207, 35, this);    //초기 포커스 주기
+				g.drawImage(bg_focus_indi, 226, indiPosition[focusing], 17, 31, this);
 				g.drawString(arrayTitle.get(i), 63, y);
 			}else{
 				g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
@@ -118,6 +128,4 @@ public class MenuPanel extends JPanel{
 			y+=42;
 		}
 	}
-
-	
 }

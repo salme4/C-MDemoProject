@@ -8,22 +8,14 @@ public class MenuModel {
 	private int startIndex = 0; 									   // 배열의 시작 인덱스
 	private int endIndex; 								    	       // 배열의 마지막 인덱스
 	private int viewStartIndex = 0; 								   // 화면에 보여질 시작 인덱스
-	private int viewEndIndex = 8;  								  	   // 화면에 보여질 마지막 인덱스
+	private int viewEndIndex = 7;  								  	   // 화면에 보여질 마지막 인덱스
 	private int currentIndex = 0;   								   // 현재 선택되어진 인덱스
 	private ArrayList<String> arrayTitle = new ArrayList<String>();
-	String[] week = { "일", "월", "화", "수", "목", "금", "토" };
+	private String[] week = { "일", "월", "화", "수", "목", "금", "토" };
 	private int[] focusPosition = {100, 142, 184, 226, 268, 310, 352, 394};
 	private int[] indiPosition = {103, 145, 187, 229, 271, 313, 355, 397};
 	private ArrayList<Observer> list = new ArrayList<Observer>();
 	
-	public int[] getFocusPosition() {
-		return focusPosition;
-	}
-
-	public void setFocusPosition(int[] focusPosition) {
-		this.focusPosition = focusPosition;
-	}
-
 	public MenuModel() {
 		arrayTitle.add("오늘의 추천");
 		arrayTitle.add("영화");
@@ -36,7 +28,24 @@ public class MenuModel {
 		arrayTitle.add("테스트 1");
 		arrayTitle.add("테스트 2");
 		arrayTitle.add("테스트 3");
-		endIndex = arrayTitle.size();
+		endIndex = arrayTitle.size() - 1;
+		
+	}
+	
+	public int[] getFocusPosition() {
+		return focusPosition;
+	}
+
+	public int[] getIndiPosition() {
+		return indiPosition;
+	}
+
+	public void setIndiPosition(int[] indiPosition) {
+		this.indiPosition = indiPosition;
+	}
+
+	public void setFocusPosition(int[] focusPosition) {
+		this.focusPosition = focusPosition;
 	}
 
 	public int getStartIndex() {
@@ -89,7 +98,7 @@ public class MenuModel {
 	
 	public void pulsCurrentIndex(){
 		this.currentIndex = this.currentIndex + 1;
-		if (currentIndex > endIndex - 1){
+		if (currentIndex > endIndex){
 			this.currentIndex = 0;
 		}
 	}
@@ -97,7 +106,7 @@ public class MenuModel {
 	public void minusCurrentIndex(){
 		this.currentIndex = this.currentIndex - 1;
 		if (currentIndex < 0) {
-			this.currentIndex = endIndex - 1;
+			this.currentIndex = endIndex;
 		}
 	}
 	
@@ -121,5 +130,23 @@ public class MenuModel {
 		date += "(" + week[cal.get(Calendar.DAY_OF_WEEK) - 1] + ") ";
 		date += dateFormat.format(cal.getTime());
 	  	return date;
+	}
+
+	public void viewPlus() {
+		this.viewStartIndex++;
+		this.viewEndIndex++;
+		if(viewEndIndex > endIndex){
+			this.viewStartIndex = startIndex;
+			this.viewEndIndex = endIndex;
+		}
+	}
+
+	public void viewMinus() {
+		this.viewStartIndex--;
+		this.viewEndIndex--;
+		if(viewStartIndex < 0){
+			this.viewStartIndex = endIndex - viewEndIndex;
+			this.viewEndIndex = endIndex;
+		}
 	}
 }
