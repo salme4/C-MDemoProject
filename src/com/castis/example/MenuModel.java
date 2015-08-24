@@ -15,7 +15,17 @@ public class MenuModel {
 	private int[] focusPosition = {100, 142, 184, 226, 268, 310, 352, 394};
 	private int[] indiPosition = {103, 145, 187, 229, 271, 313, 355, 397};
 	private ArrayList<Observer> list = new ArrayList<Observer>();
+	private int itemSize;
+	private int pageSize = 7;
 	
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
 	public MenuModel() {
 		arrayTitle.add("오늘의 추천");
 		arrayTitle.add("영화");
@@ -28,8 +38,19 @@ public class MenuModel {
 		arrayTitle.add("테스트 1");
 		arrayTitle.add("테스트 2");
 		arrayTitle.add("테스트 3");
+		arrayTitle.add("테스트 4");
+		arrayTitle.add("테스트 5");
+	
 		endIndex = arrayTitle.size() - 1;
-		
+		itemSize = arrayTitle.size();
+	}
+	
+	public int getItemSize() {
+		return itemSize;
+	}
+
+	public void setItemSize(int itemSize) {
+		this.itemSize = itemSize;
 	}
 	
 	public int[] getFocusPosition() {
@@ -105,7 +126,7 @@ public class MenuModel {
 	
 	public void minusCurrentIndex(){
 		this.currentIndex = this.currentIndex - 1;
-		if (currentIndex < 0) {
+		if (currentIndex < startIndex) {
 			this.currentIndex = endIndex;
 		}
 	}

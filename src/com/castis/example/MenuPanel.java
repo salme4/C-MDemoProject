@@ -33,8 +33,12 @@ public class MenuPanel extends JPanel{
 	private int[] focusPosition;
 	private int[] indiPosition;
 	private int currentIndex;
-	private int startIndex;
+	private int startIndex = 0;
 	private int endIndex;
+	private int pageSize;
+	private int pageCount;
+	private int itemSize;
+	
 	
 	public int getCurrentIndex() {
 		return currentIndex;
@@ -52,12 +56,11 @@ public class MenuPanel extends JPanel{
 		arrayTitle = model.getArrTitle();
 		focusPosition = model.getFocusPosition();
 		indiPosition = model.getIndiPosition();
-	}
-	
-	@Override
-	public void paint(Graphics g) {
-		int y = 148;
-		int y_2 = 222;
+		pageSize = model.getPageSize();
+		itemSize = model.getItemSize();
+		
+		pageCount = (int)((itemSize / pageSize) + ((itemSize % pageSize > 0)?1:0));
+		
 		try {
 			bg_2dep = ImageIO.read(new File("./resource/image/bg_2dep.png"));
 			bg_1dep = ImageIO.read(new File("./resource/image/bg_1dep.png"));
@@ -71,6 +74,12 @@ public class MenuPanel extends JPanel{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		int y = 148;
+		int y_2 = 222;
 		
 		g.drawImage(bg_2dep, 0, 0, 40, getHeight(), this);
 		g.drawImage(bg_1dep, 40, 0, 207, getHeight(), this);
@@ -95,6 +104,8 @@ public class MenuPanel extends JPanel{
 	
 	public void drawMenuString(Graphics g, int currentIndex){
 		int y = 123;
+		int prevStartIndex;
+		int prevEndIndex;
 		/*
 		 *  보여줄 item보다 데이터가 적을 경우 처리
 		 */
@@ -107,19 +118,24 @@ public class MenuPanel extends JPanel{
 		/*
 		 * current가 viewEndIndex를 넘을때
 		 * current가 viewStartIndex보다 작을 때
-		 * 
 		 */
+		if (currentIndex > model.getViewEndIndex()){
+			startIndex = model.getViewEndIndex() + 1;
+			endIndex = model.getEndIndex();
+		}else{
+			startIndex = model.getViewStartIndex();
+			endIndex = model.getViewEndIndex();
+		}
 		
-		//포커스인가?painting
 		for (int i = startIndex; i <= endIndex; i++) {
 			if(currentIndex == i){
-				int focusing = currentIndex;
-				if (focusing > model.getViewEndIndex()){
-					focusing = model.getViewEndIndex();
+				int focus = currentIndex;
+				if (currentIndex > model.getViewEndIndex()){
+					focus = currentIndex - model.getViewEndIndex() - 1;
 				}
 				g.setFont(new Font("HY중고딕", Font.PLAIN, 19));
-				g.drawImage(focus_main, 40, focusPosition[focusing], 207, 35, this);    //초기 포커스 주기
-				g.drawImage(bg_focus_indi, 226, indiPosition[focusing], 17, 31, this);
+				g.drawImage(focus_main, 40, focusPosition[focus], 207, 35, this);    //초기 포커스 주기
+				g.drawImage(bg_focus_indi, 226, indiPosition[focus], 17, 31, this);
 				g.drawString(arrayTitle.get(i), 63, y);
 			}else{
 				g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
