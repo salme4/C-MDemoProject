@@ -17,7 +17,18 @@ public class MenuModel {
 	private ArrayList<Observer> list = new ArrayList<Observer>();
 	private int itemSize;
 	private int pageSize = 7;
+	private Category category;
+	private Category[] subCategory;
+	private Category root;
 	
+	public Category getRoot() {
+		return root;
+	}
+
+	public void setRoot(Category root) {
+		this.root = root;
+	}
+
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -40,7 +51,14 @@ public class MenuModel {
 		arrayTitle.add("테스트 3");
 		arrayTitle.add("테스트 4");
 		arrayTitle.add("테스트 5");
-	
+
+		root = new Category();
+		subCategory = new Category[arrayTitle.size()];
+		for (int i = 0; i < arrayTitle.size(); i++) {
+			subCategory[i] = new Category(arrayTitle.get(i), String.valueOf(i));
+		}
+		root.setSubCategory(subCategory);
+		
 		endIndex = arrayTitle.size() - 1;
 		itemSize = arrayTitle.size();
 	}
@@ -158,7 +176,7 @@ public class MenuModel {
 		this.viewEndIndex++;
 		if(viewEndIndex > endIndex){
 			this.viewStartIndex = startIndex;
-			this.viewEndIndex = endIndex;
+//			this.viewEndIndex = endIndex;
 		}
 	}
 
@@ -167,7 +185,7 @@ public class MenuModel {
 		this.viewEndIndex--;
 		if(viewStartIndex < 0){
 			this.viewStartIndex = endIndex - viewEndIndex;
-			this.viewEndIndex = endIndex;
+//			this.viewEndIndex = endIndex;
 		}
 	}
 }

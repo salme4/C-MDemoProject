@@ -3,23 +3,16 @@ package com.castis.example;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-public class MenuPanel extends JPanel{
-	MenuModel model;
+public class menuView extends JFrame implements Observer{
+	MenuModel model = new MenuModel();
 	private Category root;
 	private Category[] title;
 	private BufferedImage bg_2dep;
@@ -40,17 +33,11 @@ public class MenuPanel extends JPanel{
 	private int pageCount;
 	private int itemSize;
 	
-	
-	public int getCurrentIndex() {
-		return currentIndex;
-	}
-
-	public void setCurrentIndex(int currentIndex) {
-		this.currentIndex = currentIndex;
-	}
-
-	public MenuPanel(MenuModel model) {
-		this.model = model;
+	public menuView() {
+		setTitle("메뉴 프레임");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(950, 685);
+//		this.model = model;
 		this.setFocusable(true);
 		this.requestFocusInWindow();
 		root = model.getRoot();
@@ -100,7 +87,7 @@ public class MenuPanel extends JPanel{
 		g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
 		g.drawString(model.getDateString(), 266, 85);
 		System.out.println("cur : " + currentIndex);
-		drawMenuString(g, currentIndex);                					//메뉴 글씨 그리기
+		drawMenuString(g, currentIndex); 
 	}
 	
 	public void drawMenuString(Graphics g, int currentIndex){
@@ -125,7 +112,7 @@ public class MenuPanel extends JPanel{
 			if(currentIndex == i){
 				int focus = currentIndex;
 				if (currentIndex > model.getViewEndIndex()){
-					focus = currentIndex - model.getViewEndIndex() - 1;
+					focus = currentIndex - pageSize - 1;
 				}
 				g.setFont(new Font("HY중고딕", Font.PLAIN, 19));
 				g.drawImage(focus_main, 40, focusPosition[focus], 207, 35, this);    //초기 포커스 주기
@@ -146,4 +133,15 @@ public class MenuPanel extends JPanel{
 			endIndex = model.getViewEndIndex();
 		}
 	}
+
+	public void setListener(KeyListener listener){
+		this.addKeyListener(listener);
+	}
+	
+	@Override
+	public void update(int currentIndex) {
+		this.currentIndex = currentIndex;
+		this.repaint();
+	}
+
 }

@@ -4,11 +4,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class MenuController implements KeyListener{
-	private MenuFrame view;
+	private menuView view;
 	private MenuModel model;
 	
-	public MenuController(MenuFrame menuFrame, MenuModel menuModel) {
-		this.view = menuFrame;
+	public MenuController(menuView menuView, MenuModel menuModel) {
+		this.view = menuView;
 		this.model = menuModel;
 		view.setListener(this);
 	}
@@ -40,8 +40,6 @@ public class MenuController implements KeyListener{
 	public void moveToDown(){
 		System.out.println("아래");
 		model.pulsCurrentIndex();
-		//model.viewPlus();
-//		view.repaint(model.getCurrentIndex());
 		model.notifyObservers();
 	}
 	
