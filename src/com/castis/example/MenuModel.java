@@ -16,7 +16,7 @@ public class MenuModel {
 	private int[] indiPosition = {103, 145, 187, 229, 271, 313, 355, 397};
 	private ArrayList<Observer> list = new ArrayList<Observer>();
 	private int itemSize;
-	private int pageSize = 7;
+	private int pageSize = 8;
 	private Category category;
 	private Category[] subCategory;
 	private Category root;
@@ -51,13 +51,14 @@ public class MenuModel {
 		arrayTitle.add("테스트 3");
 		arrayTitle.add("테스트 4");
 		arrayTitle.add("테스트 5");
-
+		
 		root = new Category();
 		subCategory = new Category[arrayTitle.size()];
 		for (int i = 0; i < arrayTitle.size(); i++) {
 			subCategory[i] = new Category(arrayTitle.get(i), String.valueOf(i));
 		}
 		root.setSubCategory(subCategory);
+//		subCategory[0].setSubCategory(subCategory);
 		
 		endIndex = arrayTitle.size() - 1;
 		itemSize = arrayTitle.size();

@@ -32,6 +32,7 @@ public class menuView extends JFrame implements Observer{
 	private int pageSize;
 	private int pageCount;
 	private int itemSize;
+	private int currentPageGroup;
 	
 	public menuView() {
 		setTitle("메뉴 프레임");
@@ -48,6 +49,7 @@ public class menuView extends JFrame implements Observer{
 		itemSize = model.getItemSize();
 		
 		pageCount = (int)((itemSize / pageSize) + ((itemSize % pageSize > 0)?1:0));
+		
 		
 		try {
 			bg_2dep = ImageIO.read(new File("./resource/image/bg_2dep.png"));
@@ -86,23 +88,30 @@ public class menuView extends JFrame implements Observer{
 		g.setColor(Color.white);
 		g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
 		g.drawString(model.getDateString(), 266, 85);
-		System.out.println("cur : " + currentIndex);
+//		System.out.println("cur : " + currentIndex);
 		drawMenuString(g, currentIndex); 
 	}
 	
 	public void drawMenuString(Graphics g, int currentIndex){
 		int y = 123;
-		/*
-		 *  보여줄 item보다 데이터가 적을 경우 처리
-		 */
+		
+		//보여줄 item보다 데이터가 적을 경우 처리
 		endIndexCheck();
+		
 		/*
 		 * current가 viewEndIndex를 넘을때
 		 * current가 viewStartIndex보다 작을 때
 		 */
-		if (currentIndex > pageSize){
-			startIndex = pageSize + 1;
-			endIndex = model.getEndIndex();
+		currentPageGroup = (int)((currentIndex / pageSize) + ((itemSize % pageSize > 0)?1:0));
+//		System.out.println("currentPageGroup : " + currentPageGroup);
+		if (currentPageGroup > 1){
+			startIndex = pageSize;
+//			System.out.println("startindex : " + startIndex);
+			if(currentPageGroup == pageCount){
+				endIndex = model.getEndIndex();
+			}else{
+				endIndex += pageSize;
+			}
 		}else{
 			startIndex = model.getViewStartIndex();
 			endIndexCheck();
@@ -112,7 +121,7 @@ public class menuView extends JFrame implements Observer{
 			if(currentIndex == i){
 				int focus = currentIndex;
 				if (currentIndex > model.getViewEndIndex()){
-					focus = currentIndex - pageSize - 1;
+					focus = currentIndex - pageSize;
 				}
 				g.setFont(new Font("HY중고딕", Font.PLAIN, 19));
 				g.drawImage(focus_main, 40, focusPosition[focus], 207, 35, this);    //초기 포커스 주기
