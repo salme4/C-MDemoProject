@@ -26,14 +26,10 @@ public class menu2Model {
 		parent = model.getRoot();
 		
 		
-		
-		
-		
-		
-		subCategory = new Category[menuString.size()];
-		for (int i = 0; i < menuString.size(); i++) {
-			subCategory[i] = new Category(menuString.get(i), String.valueOf(i));
-		}
-		parent.setSubCategory(subCategory);
+//		subCategory = new Category[menuString.size()];
+//		for (int i = 0; i < menuString.size(); i++) {
+//			subCategory[i] = new Category(menuString.get(i), String.valueOf(i));
+//		}
+//		parent.setSubCategory(subCategory);
 	}
 }

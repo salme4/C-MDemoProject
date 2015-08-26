@@ -20,6 +20,7 @@ public class MenuModel {
 	private Category category;
 	private Category[] subCategory;
 	private Category root;
+	private ArrayList<String> menuString;
 	
 	public Category getRoot() {
 		return root;
@@ -38,6 +39,16 @@ public class MenuModel {
 	}
 
 	public MenuModel() {
+		
+		//HAS ip :  
+		//socket? 
+		//인증
+		//getCategory
+		//가져온 데이터 메모리에 저장
+		//or 1depth 씩 가져오는 방법
+		//
+		
+		
 		arrayTitle.add("오늘의 추천");
 		arrayTitle.add("영화");
 		arrayTitle.add("인기 케이블 / 미드");
@@ -51,6 +62,8 @@ public class MenuModel {
 		arrayTitle.add("테스트 3");
 		arrayTitle.add("테스트 4");
 		arrayTitle.add("테스트 5");
+		
+		
 		
 		root = new Category();
 		subCategory = new Category[arrayTitle.size()];

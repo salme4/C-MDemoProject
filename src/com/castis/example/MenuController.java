@@ -11,6 +11,7 @@ public class MenuController implements KeyListener{
 		this.view = menuView;
 		this.model = menuModel;
 		view.setListener(this);
+		
 	}
 
 	@Override
@@ -21,6 +22,7 @@ public class MenuController implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		if (KeyEvent.VK_LEFT == e.getKeyCode()){
 			System.out.println("왼쪽");
+			moveToLeft();
 		}else if(KeyEvent.VK_RIGHT == e.getKeyCode()){
 			System.out.println("오른쪽");
 		}else if (KeyEvent.VK_DOWN == e.getKeyCode()){
@@ -35,6 +37,11 @@ public class MenuController implements KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 //		System.out.println("key Released");
+	}
+	
+	public void moveToLeft(){
+		Menu2depth depth = new Menu2depth();
+		
 	}
 	
 	public void moveToDown(){

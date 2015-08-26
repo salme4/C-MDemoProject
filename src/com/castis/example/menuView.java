@@ -50,7 +50,6 @@ public class menuView extends JFrame implements Observer{
 		
 		pageCount = (int)((itemSize / pageSize) + ((itemSize % pageSize > 0)?1:0));
 		
-		
 		try {
 			bg_2dep = ImageIO.read(new File("./resource/image/bg_2dep.png"));
 			bg_1dep = ImageIO.read(new File("./resource/image/bg_1dep.png"));
@@ -89,7 +88,7 @@ public class menuView extends JFrame implements Observer{
 		g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
 		g.drawString(model.getDateString(), 266, 85);
 //		System.out.println("cur : " + currentIndex);
-		drawMenuString(g, currentIndex); 
+		drawMenuString(g, currentIndex);
 	}
 	
 	public void drawMenuString(Graphics g, int currentIndex){
@@ -97,7 +96,6 @@ public class menuView extends JFrame implements Observer{
 		
 		//보여줄 item보다 데이터가 적을 경우 처리
 		endIndexCheck();
-		
 		/*
 		 * current가 viewEndIndex를 넘을때
 		 * current가 viewStartIndex보다 작을 때
