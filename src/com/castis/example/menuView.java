@@ -49,7 +49,7 @@ public class menuView extends JFrame implements Observer{
 		itemSize = model.getItemSize();
 		
 		pageCount = (int)((itemSize / pageSize) + ((itemSize % pageSize > 0)?1:0));
-		
+		//System.out.println(pageCount); 5
 		try {
 			bg_2dep = ImageIO.read(new File("./resource/image/bg_2dep.png"));
 			bg_1dep = ImageIO.read(new File("./resource/image/bg_1dep.png"));

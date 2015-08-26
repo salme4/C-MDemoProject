@@ -40,7 +40,6 @@ public class MenuController implements KeyListener{
 	}
 	
 	public void moveToLeft(){
-		Menu2depth depth = new Menu2depth();
 		
 	}
 	
