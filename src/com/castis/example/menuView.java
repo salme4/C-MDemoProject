@@ -94,9 +94,6 @@ public class menuView extends JFrame implements Observer{
 	public void drawMenuString(Graphics g, int currentIndex){
 		int y = 123;
 		
-		//보여줄 item보다 데이터가 적을 경우 처리
-//		endIndexCheck();
-		
 		currentPageGroup = (int)Math.ceil((double)(currentIndex+1)/pageSize);
 //		System.out.println("currentPageGroup : " + currentPageGroup);
 		if (currentPageGroup > 1){
@@ -106,7 +103,6 @@ public class menuView extends JFrame implements Observer{
 			if (endIndex > totalCount){
 				endIndex = totalCount - 1;
 			}
-//			endIndexCheck();
 		}else{
 			startIndex = 0;
 			endIndex = pageSize - 1;
@@ -123,14 +119,6 @@ public class menuView extends JFrame implements Observer{
 			}
 			g.drawString(title[i].getName(), 63, y);
 			y+=42;
-		}
-	}
-	
-	public void endIndexCheck(){
-		if(pageSize > model.getEndIndex()){
-			endIndex = model.getEndIndex();
-		}else{
-			endIndex = pageSize;
 		}
 	}
 

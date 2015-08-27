@@ -108,24 +108,20 @@ public class MenuPanel extends JPanel{
 		/*
 		 *  보여줄 item보다 데이터가 적을 경우 처리
 		 */
-		endIndexCheck();
-		/*
-		 * current가 viewEndIndex를 넘을때
-		 * current가 viewStartIndex보다 작을 때
-		 */
+
 		if (currentIndex > pageSize){
 			startIndex = pageSize + 1;
 			endIndex = model.getEndIndex();
 		}else{
-			startIndex = model.getViewStartIndex();
-			endIndexCheck();
+			startIndex = endIndex;
+
 		}
 		
 		for (int i = startIndex; i <= endIndex; i++) {
 			if(currentIndex == i){
 				int focus = currentIndex;
-				if (currentIndex > model.getViewEndIndex()){
-					focus = currentIndex - model.getViewEndIndex() - 1;
+				if (currentIndex > endIndex){
+					focus = currentIndex - endIndex;
 				}
 				g.setFont(new Font("HY중고딕", Font.PLAIN, 19));
 				g.drawImage(focus_main, 40, focusPosition[focus], 207, 35, this);    //초기 포커스 주기
@@ -139,11 +135,5 @@ public class MenuPanel extends JPanel{
 		}
 	}
 	
-	public void endIndexCheck(){
-		if(model.getViewEndIndex() > model.getEndIndex()){
-			endIndex = model.getEndIndex();
-		}else{
-			endIndex = model.getViewEndIndex();
-		}
-	}
+
 }

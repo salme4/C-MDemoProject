@@ -17,10 +17,11 @@ import org.json.simple.parser.ParseException;
 public class MenuModel {
 	private int startIndex = 0; 									   // 배열의 시작 인덱스
 	private int endIndex; 								    	       // 배열의 마지막 인덱스
-	private int viewStartIndex = 0; 								   // 화면에 보여질 시작 인덱스
-	private int viewEndIndex = 7; 						  	  		   // 화면에 보여질 마지막 인덱스
 	private int currentIndex = 0;   								   // 현재 선택되어진 인덱스
 	private ArrayList<String> arrayTitle = new ArrayList<String>();
+	private ArrayList<String> arrayCategoryId = new ArrayList<String>();
+	private ArrayList<String> subArrayTitle = new ArrayList<String>();
+	private ArrayList<String> subArrayCategoryId = new ArrayList<String>();
 	private String[] week = { "일", "월", "화", "수", "목", "금", "토" };
 	private int[] focusPosition = {100, 142, 184, 226, 268, 310, 352, 394};
 	private int[] indiPosition = {103, 145, 187, 229, 271, 313, 355, 397};
@@ -28,6 +29,7 @@ public class MenuModel {
 	private int pageSize = 8;
 	private Category category;
 	private Category[] subCategory;
+	private Category[] subCategory_2depth;
 	private Category root;
 	
 	public MenuModel() {
@@ -37,7 +39,7 @@ public class MenuModel {
 		//getCategory
 		//가져온 데이터 메모리에 저장
 		//or 1depth 씩 가져오는 방법
-		String jsonInfo_2 = callURL("http://103.21.200.200:8080/HApplicationServer/getCategoryTree.json?version=1&terminalKey=127F75265D478470CFC9764F29604A32&categoryId=0&depth=2");
+		String jsonInfo_2 = callURL("http://103.21.200.200:8080/HApplicationServer/getCategoryTree.json?version=1&terminalKey=127F75265D478470CFC9764F29604A32&categoryId=0&depth=3");
 		JSONParser jsonParser = new JSONParser();
 		JSONObject jsonObject = null;
 		try {
@@ -49,19 +51,31 @@ public class MenuModel {
 		
 		for (int i = 0; i < jsonArray.size(); i++) {
 			JSONObject jsonCategory = (JSONObject)jsonArray.get(i);
-			if (!jsonCategory.get("categoryName").equals("")){
+			if (!jsonCategory.get("categoryName").equals("") && jsonCategory.get("parentCategoryId").equals("0")){
 				arrayTitle.add((String) jsonCategory.get("categoryName"));
+				arrayCategoryId.add((String) jsonCategory.get("categoryId"));
 			}
 		}
 
+		//최상위 root객체에 1dpeth 메뉴객체 삽입
 		root = new Category();
 		subCategory = new Category[arrayTitle.size()];
-		System.out.println(arrayTitle.size());
 		for (int i = 0; i < arrayTitle.size(); i++) {
-			subCategory[i] = new Category(arrayTitle.get(i), String.valueOf(i));
+			subCategory[i] = new Category(arrayTitle.get(i), arrayCategoryId.get(i));
 		}
 		root.setSubCategory(subCategory);
-//		subCategory[0].setSubCategory(subCategory);
+		
+		
+		
+		
+		//2depth 메뉴 삽입
+		for (int i = 0; i < subCategory.length; i++) {
+			for (int j = 0; j < jsonArray.size(); j++) {
+				JSONObject jsonSubCategory = (JSONObject)jsonArray.get(i);
+				
+			}
+//			subArrayTitle.add(e);
+		}
 		
 		endIndex = arrayTitle.size();
 	}
@@ -114,22 +128,6 @@ public class MenuModel {
 		this.endIndex = endIndex;
 	}
 
-	public int getViewStartIndex() {
-		return viewStartIndex;
-	}
-
-	public void setViewStartIndex(int viewStartIndex) {
-		this.viewStartIndex = viewStartIndex;
-	}
-
-	public int getViewEndIndex() {
-		return viewEndIndex;
-	}
-
-	public void setViewEndIndex(int viewEndIndex) {
-		this.viewEndIndex = viewEndIndex;
-	}
-
 	public int getCurrentIndex() {
 		return currentIndex;
 	}
@@ -180,24 +178,6 @@ public class MenuModel {
 		date += "(" + week[cal.get(Calendar.DAY_OF_WEEK) - 1] + ") ";
 		date += dateFormat.format(cal.getTime());
 	  	return date;
-	}
-
-	public void viewPlus() {
-		this.viewStartIndex++;
-		this.viewEndIndex++;
-		if(viewEndIndex > endIndex){
-			this.viewStartIndex = startIndex;
-//			this.viewEndIndex = endIndex;
-		}
-	}
-
-	public void viewMinus() {
-		this.viewStartIndex--;
-		this.viewEndIndex--;
-		if(viewStartIndex < 0){
-			this.viewStartIndex = endIndex - viewEndIndex;
-//			this.viewEndIndex = endIndex;
-		}
 	}
 	
 	public String callURL(String myURL){
