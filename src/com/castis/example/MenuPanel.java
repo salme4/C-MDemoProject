@@ -58,7 +58,7 @@ public class MenuPanel extends JPanel{
 		focusPosition = model.getFocusPosition();
 		indiPosition = model.getIndiPosition();
 		pageSize = model.getPageSize();
-		itemSize = model.getItemSize();
+//		itemSize = model.getItemSize();
 		
 		pageCount = (int)((itemSize / pageSize) + ((itemSize % pageSize > 0)?1:0));
 		
