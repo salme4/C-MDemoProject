@@ -31,7 +31,7 @@ public class menuView extends JFrame implements Observer{
 	private int endIndex;
 	private int pageSize;
 	private int pageCount;
-	private int itemSize;
+	private int totalCount;
 	private int currentPageGroup;
 	
 	public menuView() {
@@ -46,9 +46,10 @@ public class menuView extends JFrame implements Observer{
 		focusPosition = model.getFocusPosition();
 		indiPosition = model.getIndiPosition();
 		pageSize = model.getPageSize();
-		itemSize = model.getItemSize();
+		totalCount = model.getEndIndex();
 		
-		pageCount = (int)((itemSize / pageSize) + ((itemSize % pageSize > 0)?1:0));
+		
+		pageCount = (int)((totalCount / pageSize) + ((totalCount % pageSize > 0)?1:0));
 		//System.out.println(pageCount); 5
 		try {
 			bg_2dep = ImageIO.read(new File("./resource/image/bg_2dep.png"));
@@ -87,7 +88,6 @@ public class menuView extends JFrame implements Observer{
 		g.setColor(Color.white);
 		g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
 		g.drawString(model.getDateString(), 266, 85);
-//		System.out.println("cur : " + currentIndex);
 		drawMenuString(g, currentIndex);
 	}
 	
@@ -95,35 +95,28 @@ public class menuView extends JFrame implements Observer{
 		int y = 123;
 		
 		//보여줄 item보다 데이터가 적을 경우 처리
-		endIndexCheck();
-		/*
-		 * current가 viewEndIndex를 넘을때
-		 * current가 viewStartIndex보다 작을 때
-		 */
-		currentPageGroup = (int)((currentIndex / pageSize) + ((itemSize % pageSize > 0)?1:0));
+//		endIndexCheck();
+		
+		currentPageGroup = (int)Math.ceil((double)(currentIndex+1)/pageSize);
 //		System.out.println("currentPageGroup : " + currentPageGroup);
 		if (currentPageGroup > 1){
-			startIndex = pageSize;
+			startIndex = (currentPageGroup-1)*pageSize;
 //			System.out.println("startindex : " + startIndex);
-			if(currentPageGroup == pageCount){
-				endIndex = model.getEndIndex();
-			}else{
-				endIndex += pageSize;
+			endIndex = startIndex + pageSize - 1;
+			if (endIndex > totalCount){
+				endIndex = totalCount - 1;
 			}
+//			endIndexCheck();
 		}else{
-			startIndex = model.getViewStartIndex();
-			endIndexCheck();
+			startIndex = 0;
+			endIndex = pageSize - 1;
 		}
 		
 		for (int i = startIndex; i <= endIndex; i++) {
 			if(currentIndex == i){
-				int focus = currentIndex;
-				if (currentIndex > model.getViewEndIndex()){
-					focus = currentIndex - pageSize;
-				}
 				g.setFont(new Font("HY중고딕", Font.PLAIN, 19));
-				g.drawImage(focus_main, 40, focusPosition[focus], 207, 35, this);    //초기 포커스 주기
-				g.drawImage(bg_focus_indi, 226, indiPosition[focus], 17, 31, this);
+				g.drawImage(focus_main, 40, focusPosition[currentIndex-startIndex], 207, 35, this);    //초기 포커스 주기
+				g.drawImage(bg_focus_indi, 226, indiPosition[currentIndex-startIndex], 17, 31, this);
 				g.drawString(title[i].getName(), 63, y);
 			}else{
 				g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
@@ -134,10 +127,10 @@ public class menuView extends JFrame implements Observer{
 	}
 	
 	public void endIndexCheck(){
-		if(model.getViewEndIndex() > model.getEndIndex()){
+		if(pageSize > model.getEndIndex()){
 			endIndex = model.getEndIndex();
 		}else{
-			endIndex = model.getViewEndIndex();
+			endIndex = pageSize;
 		}
 	}
 

@@ -25,7 +25,6 @@ public class MenuModel {
 	private int[] focusPosition = {100, 142, 184, 226, 268, 310, 352, 394};
 	private int[] indiPosition = {103, 145, 187, 229, 271, 313, 355, 397};
 	private ArrayList<Observer> list = new ArrayList<Observer>();
-	private int itemSize;
 	private int pageSize = 8;
 	private Category category;
 	private Category[] subCategory;
@@ -38,7 +37,7 @@ public class MenuModel {
 		//getCategory
 		//가져온 데이터 메모리에 저장
 		//or 1depth 씩 가져오는 방법
-		String jsonInfo_2 = callURL("http://103.21.200.200:8080/HApplicationServer/getCategoryTree.json?version=1&terminalKey=127F75265D478470CFC9764F29604A32&categoryId=0");
+		String jsonInfo_2 = callURL("http://103.21.200.200:8080/HApplicationServer/getCategoryTree.json?version=1&terminalKey=127F75265D478470CFC9764F29604A32&categoryId=0&depth=2");
 		JSONParser jsonParser = new JSONParser();
 		JSONObject jsonObject = null;
 		try {
@@ -50,21 +49,21 @@ public class MenuModel {
 		
 		for (int i = 0; i < jsonArray.size(); i++) {
 			JSONObject jsonCategory = (JSONObject)jsonArray.get(i);
-			if (jsonCategory.get("parentCategoryId").equals("0")){
+			if (!jsonCategory.get("categoryName").equals("")){
 				arrayTitle.add((String) jsonCategory.get("categoryName"));
 			}
 		}
 
 		root = new Category();
 		subCategory = new Category[arrayTitle.size()];
+		System.out.println(arrayTitle.size());
 		for (int i = 0; i < arrayTitle.size(); i++) {
 			subCategory[i] = new Category(arrayTitle.get(i), String.valueOf(i));
 		}
 		root.setSubCategory(subCategory);
 //		subCategory[0].setSubCategory(subCategory);
 		
-		endIndex = arrayTitle.size() - 1;
-		itemSize = arrayTitle.size();
+		endIndex = arrayTitle.size();
 	}
 	
 	public Category getRoot() {
@@ -81,14 +80,6 @@ public class MenuModel {
 
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
-	}
-	
-	public int getItemSize() {
-		return itemSize;
-	}
-
-	public void setItemSize(int itemSize) {
-		this.itemSize = itemSize;
 	}
 	
 	public int[] getFocusPosition() {
@@ -157,7 +148,7 @@ public class MenuModel {
 	
 	public void pulsCurrentIndex(){
 		this.currentIndex = this.currentIndex + 1;
-		if (currentIndex > endIndex){
+		if (currentIndex > endIndex - 1){
 			this.currentIndex = 0;
 		}
 	}
@@ -165,7 +156,7 @@ public class MenuModel {
 	public void minusCurrentIndex(){
 		this.currentIndex = this.currentIndex - 1;
 		if (currentIndex < startIndex) {
-			this.currentIndex = endIndex;
+			this.currentIndex = endIndex - 1;
 		}
 	}
 	
