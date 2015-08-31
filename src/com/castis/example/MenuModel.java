@@ -31,6 +31,7 @@ public class MenuModel {
 	private Category[] subCategory;
 	private Category[] subCategory_2depth;
 	private Category root;
+	JSONObject jsonCategory;
 	
 	public MenuModel() {
 		//HAS ip :  
@@ -50,7 +51,7 @@ public class MenuModel {
 		JSONArray jsonArray = (JSONArray)jsonObject.get("categoryList");
 		
 		for (int i = 0; i < jsonArray.size(); i++) {
-			JSONObject jsonCategory = (JSONObject)jsonArray.get(i);
+			jsonCategory = (JSONObject)jsonArray.get(i);
 			if (!jsonCategory.get("categoryName").equals("") && jsonCategory.get("parentCategoryId").equals("0")){
 				arrayTitle.add((String) jsonCategory.get("categoryName"));
 				arrayCategoryId.add((String) jsonCategory.get("categoryId"));
@@ -62,21 +63,22 @@ public class MenuModel {
 		subCategory = new Category[arrayTitle.size()];
 		for (int i = 0; i < arrayTitle.size(); i++) {
 			subCategory[i] = new Category(arrayTitle.get(i), arrayCategoryId.get(i));
+			subCategory[i].setItem((JSONObject)jsonArray.get(i));
 		}
+		
 		root.setSubCategory(subCategory);
-		
-		
-		
-		
-		//2depth 메뉴 삽입
-		for (int i = 0; i < subCategory.length; i++) {
-			for (int j = 0; j < jsonArray.size(); j++) {
-				JSONObject jsonSubCategory = (JSONObject)jsonArray.get(i);
+
+//		2depth 메뉴 삽입
+//		for (int i = 0; i < subCategory.length; i++) {
+//			JSONObject jsonSubCategory = (JSONObject)jsonArray.get(i);
+//			for (int j = 0; j < jsonArray.size(); j++) {
+//				subCategory[i].setItem(jsonSubCategory);
+//			}
+//		}
 				
-			}
-//			subArrayTitle.add(e);
-		}
-		
+//		for (int i = 0; i < arrayTitle.size(); i++) {
+//			System.out.println(arrayTitle.get(i));
+//		}
 		endIndex = arrayTitle.size();
 	}
 	
@@ -161,7 +163,6 @@ public class MenuModel {
 	public void registerObserver(Observer o){
 		list.add(o);
 	}
-	
 	
 	public void notifyObservers() {
 		for(Observer o : list){

@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 
 public class menuView extends JFrame implements Observer{
 	MenuModel model = new MenuModel();
-	private Category root;
 	private Category[] title;
 	private BufferedImage bg_2dep;
 	private BufferedImage bg_1dep;
@@ -33,6 +32,8 @@ public class menuView extends JFrame implements Observer{
 	private int pageCount;
 	private int totalCount;
 	private int currentPageGroup;
+	private Category[] subCategory;
+	private Category root;
 	
 	public menuView() {
 		setTitle("메뉴 프레임");
@@ -50,7 +51,6 @@ public class menuView extends JFrame implements Observer{
 		
 		
 		pageCount = (int)((totalCount / pageSize) + ((totalCount % pageSize > 0)?1:0));
-		//System.out.println(pageCount); 5
 		try {
 			bg_2dep = ImageIO.read(new File("./resource/image/bg_2dep.png"));
 			bg_1dep = ImageIO.read(new File("./resource/image/bg_1dep.png"));
@@ -89,16 +89,24 @@ public class menuView extends JFrame implements Observer{
 		g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
 		g.drawString(model.getDateString(), 266, 85);
 		drawMenuString(g, currentIndex);
+		drawSubMenuString(g, currentIndex);
 	}
+	
+	public void drawSubMenuString(Graphics g, int currenIndex){
+		root = model.getRoot();
+		subCategory = root.getSubCategory();
+		for (int i = 0; i < 8; i++) {
+			g.drawString(subCategory[i].getItemName(), 267, 208 + (42 * i));
+		}
+	}
+	
 	
 	public void drawMenuString(Graphics g, int currentIndex){
 		int y = 123;
 		
 		currentPageGroup = (int)Math.ceil((double)(currentIndex+1)/pageSize);
-//		System.out.println("currentPageGroup : " + currentPageGroup);
 		if (currentPageGroup > 1){
 			startIndex = (currentPageGroup-1)*pageSize;
-//			System.out.println("startindex : " + startIndex);
 			endIndex = startIndex + pageSize - 1;
 			if (endIndex > totalCount){
 				endIndex = totalCount - 1;
