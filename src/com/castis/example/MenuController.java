@@ -45,13 +45,13 @@ public class MenuController implements KeyListener{
 	
 	public void moveToDown(){
 //		System.out.println("아래");
-		model.pulsCurrentIndex();
+		model.addCurrentIndex();
 		model.notifyObservers();
 	}
 	
 	public void moveToUp(){
 //		System.out.println("위");
-		model.minusCurrentIndex();
+		model.subtractCurrentIndex();
 		//model.viewMinus();
 		model.notifyObservers();
 	}

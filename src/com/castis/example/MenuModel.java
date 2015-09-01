@@ -5,14 +5,14 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.json.me.JSONArray;
+import org.json.me.JSONException;
+import org.json.me.JSONObject;
 
 public class MenuModel {
 	private int startIndex = 0; 									   // 배열의 시작 인덱스
@@ -27,12 +27,18 @@ public class MenuModel {
 	private int[] indiPosition = {103, 145, 187, 229, 271, 313, 355, 397};
 	private ArrayList<Observer> list = new ArrayList<Observer>();
 	private int pageSize = 8;
-	private Category category;
-	private Category[] subCategory;
-	private Category[] subCategory_2depth;
-	private Category root;
-	JSONObject jsonCategory;
+	private int arraySize;
+	JSONArray array;
+	Category categorys[];
 	
+	public Category[] getCategorys() {
+		return categorys;
+	}
+
+	public void setCategorys(Category[] categorys) {
+		this.categorys = categorys;
+	}
+
 	public MenuModel() {
 		//HAS ip :  
 		//urlConnection
@@ -41,32 +47,55 @@ public class MenuModel {
 		//가져온 데이터 메모리에 저장
 		//or 1depth 씩 가져오는 방법
 		String jsonInfo_2 = callURL("http://103.21.200.200:8080/HApplicationServer/getCategoryTree.json?version=1&terminalKey=127F75265D478470CFC9764F29604A32&categoryId=0&depth=3");
-		JSONParser jsonParser = new JSONParser();
-		JSONObject jsonObject = null;
+		ArrayList<JSONObject> jObjects = new ArrayList<JSONObject>();
 		try {
-			jsonObject = (JSONObject)jsonParser.parse(jsonInfo_2);
-		} catch (ParseException e) {
+			JSONObject jsonObject = new JSONObject(jsonInfo_2);
+			JSONArray jsonArray = jsonObject.getJSONArray("categoryList");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				if(jsonArray.getJSONObject(i).getString("parentCategoryId").equals("0")){
+					jObjects.add(jsonArray.getJSONObject(i));
+				}
+			}
+			
+			arraySize = jObjects.size();
+			categorys = new Category[arraySize];
+			for (int i = 0; i < categorys.length; i++) {
+				Category category = new Category();
+				category.setItem(jObjects.get(i));
+				categorys[i] = category;
+			}
+			
+			
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		JSONArray jsonArray = (JSONArray)jsonObject.get("categoryList");
 		
-		for (int i = 0; i < jsonArray.size(); i++) {
-			jsonCategory = (JSONObject)jsonArray.get(i);
-			if (!jsonCategory.get("categoryName").equals("") && jsonCategory.get("parentCategoryId").equals("0")){
-				arrayTitle.add((String) jsonCategory.get("categoryName"));
-				arrayCategoryId.add((String) jsonCategory.get("categoryId"));
-			}
-		}
-
-		//최상위 root객체에 1dpeth 메뉴객체 삽입
-		root = new Category();
-		subCategory = new Category[arrayTitle.size()];
-		for (int i = 0; i < arrayTitle.size(); i++) {
-			subCategory[i] = new Category(arrayTitle.get(i), arrayCategoryId.get(i));
-			subCategory[i].setItem((JSONObject)jsonArray.get(i));
-		}
 		
-		root.setSubCategory(subCategory);
+		
+//		try{
+//			JSONObject jsonObject = new JSONObject(jsonInfo_2);
+//			JSONArray jsonArray = null;
+//			jsonObject.toJSONArray(jsonArray);
+//			
+//			for (int i = 0; i < jsonArray.length(); i++) {
+//				jsonCategory = (JSONObject)jsonObject.
+//				if (!jsonCategory.get("categoryName").equals("") && jsonCategory.get("parentCategoryId").equals("0")){
+//					arrayTitle.add((String) jsonCategory.get("categoryName"));
+//					arrayCategoryId.add((String) jsonCategory.get("categoryId"));
+//				}
+//			}
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		//최상위 root객체에 1dpeth 메뉴객체 삽입
+//		root = new Category();
+//		subCategory = new Category[arrayTitle.size()];
+//		for (int i = 0; i < arrayTitle.size(); i++) {
+//			subCategory[i] = new Category(arrayTitle.get(i), arrayCategoryId.get(i));
+//			subCategory[i].setItem((JSONObject)jsonArray.get(i));
+//		}
+//		
+//		root.setSubCategory(subCategory);
 
 //		2depth 메뉴 삽입
 //		for (int i = 0; i < subCategory.length; i++) {
@@ -75,21 +104,10 @@ public class MenuModel {
 //				subCategory[i].setItem(jsonSubCategory);
 //			}
 //		}
-				
-//		for (int i = 0; i < arrayTitle.size(); i++) {
-//			System.out.println(arrayTitle.get(i));
-//		}
-		endIndex = arrayTitle.size();
+
+		endIndex = arraySize;
 	}
 	
-	public Category getRoot() {
-		return root;
-	}
-
-	public void setRoot(Category root) {
-		this.root = root;
-	}
-
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -146,14 +164,14 @@ public class MenuModel {
 		this.arrayTitle = arrayTitle;
 	}
 	
-	public void pulsCurrentIndex(){
+	public void addCurrentIndex(){
 		this.currentIndex = this.currentIndex + 1;
 		if (currentIndex > endIndex - 1){
 			this.currentIndex = 0;
 		}
 	}
 	
-	public void minusCurrentIndex(){
+	public void subtractCurrentIndex(){
 		this.currentIndex = this.currentIndex - 1;
 		if (currentIndex < startIndex) {
 			this.currentIndex = endIndex - 1;

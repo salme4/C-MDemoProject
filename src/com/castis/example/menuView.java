@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 
 public class menuView extends JFrame implements Observer{
 	MenuModel model = new MenuModel();
-	private Category[] title;
+	private Category[] menu;
 	private BufferedImage bg_2dep;
 	private BufferedImage bg_1dep;
 	private BufferedImage logo;
@@ -35,35 +35,30 @@ public class menuView extends JFrame implements Observer{
 	private Category[] subCategory;
 	private Category root;
 	
-	public menuView() {
+	public menuView() throws Exception{
 		setTitle("메뉴 프레임");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(950, 685);
-//		this.model = model;
 		this.setFocusable(true);
 		this.requestFocusInWindow();
-		root = model.getRoot();
-		title = root.getSubCategory();
+//		root = model.getRoot();
+		menu = model.getCategorys();
 		focusPosition = model.getFocusPosition();
 		indiPosition = model.getIndiPosition();
 		pageSize = model.getPageSize();
 		totalCount = model.getEndIndex();
 		
-		
 		pageCount = (int)((totalCount / pageSize) + ((totalCount % pageSize > 0)?1:0));
-		try {
-			bg_2dep = ImageIO.read(new File("./resource/image/bg_2dep.png"));
-			bg_1dep = ImageIO.read(new File("./resource/image/bg_1dep.png"));
-			logo = ImageIO.read(new File("./resource/image/load_01.png"));
-			bg_2dep_2 = ImageIO.read(new File("./resource/image/bg_2dep.png"));
-			bg_listline = ImageIO.read(new File("./resource/image/bg_listline.png"));
-			main_banner = ImageIO.read(new File("./resource/image/bg_banner_fix.png"));
-			bg_listline_2 = ImageIO.read(new File("./resource/image/bg_listline_2.png"));
-			bg_focus_indi = ImageIO.read(new File("./resource/image/bg_focus_indi.png"));
-			focus_main = ImageIO.read(new File("./resource/image/focus_main.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
+		bg_2dep = ImageIO.read(new File("./resource/image/bg_2dep.png"));
+		bg_1dep = ImageIO.read(new File("./resource/image/bg_1dep.png"));
+		logo = ImageIO.read(new File("./resource/image/load_01.png"));
+		bg_2dep_2 = ImageIO.read(new File("./resource/image/bg_2dep.png"));
+		bg_listline = ImageIO.read(new File("./resource/image/bg_listline.png"));
+		main_banner = ImageIO.read(new File("./resource/image/bg_banner_fix.png"));
+		bg_listline_2 = ImageIO.read(new File("./resource/image/bg_listline_2.png"));
+		bg_focus_indi = ImageIO.read(new File("./resource/image/bg_focus_indi.png"));
+		focus_main = ImageIO.read(new File("./resource/image/focus_main.png"));
 	}
 	
 	@Override
@@ -88,20 +83,22 @@ public class menuView extends JFrame implements Observer{
 		g.setColor(Color.white);
 		g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
 		g.drawString(model.getDateString(), 266, 85);
+		try{
 		drawMenuString(g, currentIndex);
+		}catch(Exception e){}
 		drawSubMenuString(g, currentIndex);
 	}
 	
 	public void drawSubMenuString(Graphics g, int currenIndex){
-		root = model.getRoot();
-		subCategory = root.getSubCategory();
-		for (int i = 0; i < 8; i++) {
-			g.drawString(subCategory[i].getItemName(), 267, 208 + (42 * i));
-		}
+//		root = model.getRoot();
+//		subCategory = root.getSubCategory();
+//		for (int i = 0; i < 8; i++) {
+//			g.drawString(subCategory[i].getItemName(), 267, 208 + (42 * i));
+//		}
 	}
 	
 	
-	public void drawMenuString(Graphics g, int currentIndex){
+	public void drawMenuString(Graphics g, int currentIndex) throws Exception{
 		int y = 123;
 		
 		currentPageGroup = (int)Math.ceil((double)(currentIndex+1)/pageSize);
@@ -121,11 +118,11 @@ public class menuView extends JFrame implements Observer{
 				g.setFont(new Font("HY중고딕", Font.PLAIN, 19));
 				g.drawImage(focus_main, 40, focusPosition[currentIndex-startIndex], 207, 35, this);    //초기 포커스 주기
 				g.drawImage(bg_focus_indi, 226, indiPosition[currentIndex-startIndex], 17, 31, this);
-				g.drawString(title[i].getName(), 63, y);
+				g.drawString(menu[i].getItemName(), 63, y);
 			}else{
 				g.setFont(new Font("HY중고딕", Font.PLAIN, 18));
 			}
-			g.drawString(title[i].getName(), 63, y);
+			g.drawString(menu[i].getItemName(), 63, y);
 			y+=42;
 		}
 	}
@@ -137,6 +134,8 @@ public class menuView extends JFrame implements Observer{
 	@Override
 	public void update(int currentIndex) {
 		this.currentIndex = currentIndex;
+//		this.startIndex = model.getStartIndex();
+//		this.endIndex = model.getEndIndex();
 		this.repaint();
 	}
 

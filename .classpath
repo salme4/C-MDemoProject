@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="resource/json_simple-1.1.jar"/>
+	<classpathentry kind="lib" path="/src/lib/CJ_normal_stub_20101103.zip"/>
+	<classpathentry kind="lib" path="/src/lib/navsuite_2009.zip"/>
+	<classpathentry kind="lib" path="/src/lib/navsuite_cj_interface_20110803.zip"/>
+	<classpathentry kind="lib" path="/src/lib/OCAP_I16_java_stubs_070717.zip"/>
+	<classpathentry kind="lib" path="resource/json-me.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
