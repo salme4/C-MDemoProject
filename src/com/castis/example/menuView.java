@@ -11,9 +11,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import org.json.me.JSONException;
+
 public class menuView extends JFrame implements Observer{
 	MenuModel model = new MenuModel();
 	private Category[] menu;
+	private Category[] subMenu;
 	private BufferedImage bg_2dep;
 	private BufferedImage bg_1dep;
 	private BufferedImage logo;
@@ -90,10 +93,16 @@ public class menuView extends JFrame implements Observer{
 	}
 	
 	public void drawSubMenuString(Graphics g, int currenIndex){
-//		root = model.getRoot();
-//		subCategory = root.getSubCategory();
-//		for (int i = 0; i < 8; i++) {
-//			g.drawString(subCategory[i].getItemName(), 267, 208 + (42 * i));
+//		subMenu = menu[currenIndex].getSubCategory();
+//		try {
+//			for (int i = 0; i < subMenu.length; i++) {
+//				if(!subMenu[i].getItemName().equals("")){
+//					g.drawString(subMenu[i].getItemName(), 267, 208 + (i*42));
+//				}
+//			}
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 //		}
 	}
 	

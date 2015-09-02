@@ -25,7 +25,7 @@ public class Category {
 	
 	}
 	
-	public String getid() throws JSONException {
+	public String getCategoryId() throws JSONException {
 		return (String)item.getString("categoryId");
 	}
 	

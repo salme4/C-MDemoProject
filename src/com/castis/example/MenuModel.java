@@ -14,6 +14,8 @@ import org.json.me.JSONArray;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
 
+import com.castis.winter.util.Logger;
+
 public class MenuModel {
 	private int startIndex = 0; 									   // 배열의 시작 인덱스
 	private int endIndex; 								    	       // 배열의 마지막 인덱스
@@ -30,6 +32,10 @@ public class MenuModel {
 	private int arraySize;
 	JSONArray array;
 	Category categorys[];
+	Category subCategorys[];
+	Category category;
+	Category subCategory;
+	JSONArray jsonArray;
 	
 	public Category[] getCategorys() {
 		return categorys;
@@ -50,7 +56,7 @@ public class MenuModel {
 		ArrayList<JSONObject> jObjects = new ArrayList<JSONObject>();
 		try {
 			JSONObject jsonObject = new JSONObject(jsonInfo_2);
-			JSONArray jsonArray = jsonObject.getJSONArray("categoryList");
+			jsonArray = jsonObject.getJSONArray("categoryList");
 			for (int i = 0; i < jsonArray.length(); i++) {
 				if(jsonArray.getJSONObject(i).getString("parentCategoryId").equals("0")){
 					jObjects.add(jsonArray.getJSONObject(i));
@@ -60,52 +66,43 @@ public class MenuModel {
 			arraySize = jObjects.size();
 			categorys = new Category[arraySize];
 			for (int i = 0; i < categorys.length; i++) {
-				Category category = new Category();
+				category = new Category();
 				category.setItem(jObjects.get(i));
 				categorys[i] = category;
 			}
 			
+			ArrayList<JSONObject> jSubObject = new ArrayList<JSONObject>();
+
+//			jSubObject.add(jsonArray.getJSONObject(j));
+//			subCategorys = new Category[jSubObject.size()];
+//			for (int k = 0; k < subCategorys.length; k++) {
+//				subCategory = new Category();
+//				subCategory.setItem(jSubObject.get(k));
+//				subCategorys[k] = subCategory;
+//			}
+			
+			//2depth 메뉴 
+			for (int i = 0; i < categorys.length; i++) {
+				String parentCategoryId = categorys[i].getCategoryId();
+				Logger.I(this, "=================" + parentCategoryId + "=================");
+				for (int j = 0; j < jsonArray.length(); j++) {
+					String categoryId = jsonArray.getJSONObject(j).getString("parentCategoryId");
+					if(parentCategoryId.equals(categoryId) && !jsonArray.getJSONObject(j).getString("categoryName").equals("")){
+						
+						Logger.I(this, jsonArray.getJSONObject(j).getString("categoryName"));
+					}
+					categorys[i].setSubCategory(subCategorys);
+				}
+			}
 			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-//		try{
-//			JSONObject jsonObject = new JSONObject(jsonInfo_2);
-//			JSONArray jsonArray = null;
-//			jsonObject.toJSONArray(jsonArray);
-//			
-//			for (int i = 0; i < jsonArray.length(); i++) {
-//				jsonCategory = (JSONObject)jsonObject.
-//				if (!jsonCategory.get("categoryName").equals("") && jsonCategory.get("parentCategoryId").equals("0")){
-//					arrayTitle.add((String) jsonCategory.get("categoryName"));
-//					arrayCategoryId.add((String) jsonCategory.get("categoryId"));
-//				}
-//			}
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}
-//		//최상위 root객체에 1dpeth 메뉴객체 삽입
-//		root = new Category();
-//		subCategory = new Category[arrayTitle.size()];
-//		for (int i = 0; i < arrayTitle.size(); i++) {
-//			subCategory[i] = new Category(arrayTitle.get(i), arrayCategoryId.get(i));
-//			subCategory[i].setItem((JSONObject)jsonArray.get(i));
-//		}
-//		
-//		root.setSubCategory(subCategory);
-
-//		2depth 메뉴 삽입
-//		for (int i = 0; i < subCategory.length; i++) {
-//			JSONObject jsonSubCategory = (JSONObject)jsonArray.get(i);
-//			for (int j = 0; j < jsonArray.size(); j++) {
-//				subCategory[i].setItem(jsonSubCategory);
-//			}
-//		}
-
 		endIndex = arraySize;
+	}
+	
+	public Category getCategoryAt(int index){
+		return this.category.getCategoryAt(index);
 	}
 	
 	public int getPageSize() {

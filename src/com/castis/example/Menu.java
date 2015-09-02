@@ -1,11 +1,16 @@
 package com.castis.example;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Window;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
 
 import org.json.me.JSONArray;
 import org.json.me.JSONException;
@@ -25,6 +30,7 @@ public class Menu {
 		menuModel.registerObserver(menuView);
 		MenuController menuController = new MenuController(menuView, menuModel);
 		menuView.setVisible(true);
+		
 		
 		
 //		String jsonInfo_2 = callURL("http://103.21.200.200:8080/HApplicationServer/getCategoryTree.json?version=1&terminalKey=127F75265D478470CFC9764F29604A32&categoryId=0&depth=3");
