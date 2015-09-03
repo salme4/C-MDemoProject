@@ -73,14 +73,6 @@ public class MenuModel {
 			
 			ArrayList<JSONObject> jSubObject = new ArrayList<JSONObject>();
 
-//			jSubObject.add(jsonArray.getJSONObject(j));
-//			subCategorys = new Category[jSubObject.size()];
-//			for (int k = 0; k < subCategorys.length; k++) {
-//				subCategory = new Category();
-//				subCategory.setItem(jSubObject.get(k));
-//				subCategorys[k] = subCategory;
-//			}
-			
 			//2depth 메뉴 
 			for (int i = 0; i < categorys.length; i++) {
 				String parentCategoryId = categorys[i].getCategoryId();
@@ -88,12 +80,24 @@ public class MenuModel {
 				for (int j = 0; j < jsonArray.length(); j++) {
 					String categoryId = jsonArray.getJSONObject(j).getString("parentCategoryId");
 					if(parentCategoryId.equals(categoryId) && !jsonArray.getJSONObject(j).getString("categoryName").equals("")){
-						
+						jSubObject.add(jsonArray.getJSONObject(j));
 						Logger.I(this, jsonArray.getJSONObject(j).getString("categoryName"));
 					}
-					categorys[i].setSubCategory(subCategorys);
 				}
+				subCategorys = new Category[jSubObject.size()];
+				for (int k = 0; k < subCategorys.length; k++) {
+					subCategory = new Category();
+					subCategory.setItem(jSubObject.get(k));
+					subCategorys[k] = subCategory;
+				}
+				categorys[i].setSubCategory(subCategorys);
+				subCategorys = null;
+				jSubObject.clear();
 			}
+
+			
+			
+			
 			
 		} catch (JSONException e) {
 			e.printStackTrace();

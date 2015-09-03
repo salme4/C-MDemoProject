@@ -93,17 +93,18 @@ public class menuView extends JFrame implements Observer{
 	}
 	
 	public void drawSubMenuString(Graphics g, int currenIndex){
-//		subMenu = menu[currenIndex].getSubCategory();
-//		try {
-//			for (int i = 0; i < subMenu.length; i++) {
-//				if(!subMenu[i].getItemName().equals("")){
-//					g.drawString(subMenu[i].getItemName(), 267, 208 + (i*42));
-//				}
-//			}
-//		} catch (JSONException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		subMenu = menu[currenIndex].getSubCategory();
+
+		try {
+			for (int i = 0; i < subMenu.length; i++) {
+				if(!subMenu[i].getItemName().equals("")){
+					g.drawString(subMenu[i].getItemName(), 267, 208 + (i*42));
+				}
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
