@@ -46,12 +46,8 @@ public class MenuModel {
 	}
 
 	public MenuModel() {
-		//HAS ip :  
-		//urlConnection
-		//인증
-		//getCategory
-		//가져온 데이터 메모리에 저장
-		//or 1depth 씩 가져오는 방법
+		//2depth로 포커스 이동 시 view Change
+
 		String jsonInfo_2 = callURL("http://103.21.200.200:8080/HApplicationServer/getCategoryTree.json?version=1&terminalKey=127F75265D478470CFC9764F29604A32&categoryId=0&depth=3");
 		ArrayList<JSONObject> jObjects = new ArrayList<JSONObject>();
 		try {
@@ -73,7 +69,7 @@ public class MenuModel {
 			
 			ArrayList<JSONObject> jSubObject = new ArrayList<JSONObject>();
 
-			//2depth 메뉴 
+			//2depth 메뉴 진입 
 			for (int i = 0; i < categorys.length; i++) {
 				String parentCategoryId = categorys[i].getCategoryId();
 				Logger.I(this, "=================" + parentCategoryId + "=================");
@@ -94,13 +90,9 @@ public class MenuModel {
 				subCategorys = null;
 				jSubObject.clear();
 			}
-
-			
-			
-			
 			
 		} catch (JSONException e) {
-			e.printStackTrace();
+			Logger.E(this, "json Parsing Or HAS Connection Error!!");
 		}
 		endIndex = arraySize;
 	}
@@ -185,7 +177,7 @@ public class MenuModel {
 	
 	public void notifyObservers() {
 		for(Observer o : list){
-			System.out.println("currentIndex : " + currentIndex);
+			Logger.I(this, "currentIndex : " + currentIndex);
 			o.update(currentIndex);
 		}
 	}
@@ -201,7 +193,7 @@ public class MenuModel {
 	}
 	
 	public String callURL(String myURL){
-		System.out.println("Requested URL : " + myURL);
+		Logger.I(this, "Requested URL : " + myURL);
 		StringBuilder sb = new StringBuilder();
 		URLConnection urlConn = null;
 		InputStreamReader in = null;
