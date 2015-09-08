@@ -10,7 +10,7 @@ public abstract class Window extends WComponent {
 
     WComposite parent;
     boolean enabled = false;
-    Window() {
+    protected Window() {
     }
 
     public Window(WComposite parent) {

@@ -20,10 +20,6 @@ import com.castis.winter.navigator.NavigatorModelData;
 import com.castis.winter.window.WComposite;
 
 public class Menu {
-	private static int arraySize;
-	JSONArray array;
-	static Category categorys[];
-	
 	public static void main(String[] args) throws Exception{
 		MenuModel menuModel = new MenuModel();
 		menuView menuView = new menuView();

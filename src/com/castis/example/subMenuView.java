@@ -12,9 +12,8 @@ import com.castis.winter.window.WComposite;
 
 public class subMenuView extends NavigatorView{
 
-	public subMenuView(WComposite parent, NavigatorModel model) {
-		super(parent, model);
-		// TODO Auto-generated constructor stub
+	public subMenuView(NavigatorModel model) {
+		super(model);
 	}
 
 	@Override

@@ -25,6 +25,7 @@ public class MenuController implements KeyListener{
 			moveToLeft();
 		}else if(KeyEvent.VK_RIGHT == e.getKeyCode()){
 			System.out.println("오른쪽");
+			moveToRight();
 		}else if (KeyEvent.VK_DOWN == e.getKeyCode()){
 			moveToDown();
 		}else if(KeyEvent.VK_UP == e.getKeyCode()){
@@ -39,8 +40,13 @@ public class MenuController implements KeyListener{
 //		System.out.println("key Released");
 	}
 	
-	public void moveToLeft(){
+	public void moveToRight(){
 		
+	}
+	
+	public void moveToLeft(){
+		//subMenuModel subModel = new subMenuModel(new Category());
+		//subMenuView subView = new subMenuView(model);
 	}
 	
 	public void moveToDown(){

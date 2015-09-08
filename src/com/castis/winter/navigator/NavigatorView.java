@@ -21,6 +21,11 @@ public abstract class NavigatorView extends Window {
 	this.model = model;
     }
 
+    public NavigatorView(NavigatorModel model) {
+    	super();
+    	this.model = model;
+    }
+    
     public abstract void initialize();
 
     public abstract void drawPaint(Graphics g);
